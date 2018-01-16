@@ -8,6 +8,16 @@ module Domain
 
     attr_reader :latitude, :longitude
 
+    # Check arguments and creates new instance
+    # @param latitude [Numerical] geo latitude
+    # @param longitude [Numerical] geo longitude
+    def self.build(latitude:, longitude:)
+      throw(:invalid_params) unless (0..90).include?(latitude)
+      throw(:invalid_params) unless (-180..180).include?(longitude)
+
+      new(latitude: latitude, longitude: longitude)
+    end
+
     # @param latitude [Numerical] geo latitude
     # @param longitude [Numerical] geo longitude
     def initialize(latitude:, longitude:)
