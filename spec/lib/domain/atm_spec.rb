@@ -30,7 +30,7 @@ RSpec.describe Domain::Atm do
     it { expect(atm2.to_s).to eq("AnotherATM (51.51; -0.085)") }
   end
 
-  describe "distance_to" do
+  describe "#distance_to" do
     let(:current_point) { double(:point) }
 
     it "check distance to atm1" do
