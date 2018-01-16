@@ -3,7 +3,7 @@ require_relative "shared_examples"
 
 RSpec.describe Domain::Point do
   let(:penza) { Domain::Point.new(latitude: 53.19, longitude: 45.01) }
-  let(:london) { Domain::Point.new(latitude: 51.51, longitude:  -0.085) }
+  let(:london) { Domain::Point.new(latitude: 51.51, longitude: -0.085) }
 
   # ensure interface
   it_behaves_like("point") { let(:point) { penza } }
