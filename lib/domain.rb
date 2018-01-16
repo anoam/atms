@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 
-require_relative "./domain/atm"
-require_relative "./domain/point"
-require_relative "./domain/atm_factory"
-
 # Contains domain logic
 module Domain
+  autoload :Atm, "domain/atm"
+  autoload :Point, "domain/point"
+  autoload :AtmFactory, "domain/atm_factory"
+  autoload :AtmCreator, "domain/atm_creator"
+  autoload :AtmRemover, "domain/atm_remover"
 end

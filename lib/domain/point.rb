@@ -11,6 +11,7 @@ module Domain
     # Check arguments and creates new instance
     # @param latitude [Numerical] geo latitude
     # @param longitude [Numerical] geo longitude
+    # @return [Point]
     def self.build(latitude:, longitude:)
       throw(:invalid_params) unless (0..90).include?(latitude)
       throw(:invalid_params) unless (-180..180).include?(longitude)
