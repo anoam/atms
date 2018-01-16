@@ -1,7 +1,10 @@
 require "domain"
+require_relative "shared_examples"
 
 RSpec.describe Domain::AtmFactory do
   subject { Domain::AtmFactory.new }
+  # ensure interface
+  it_behaves_like("atm_factory") { let(:factory) { subject } }
 
   describe "#build" do
 
