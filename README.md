@@ -11,6 +11,8 @@
 
 Для упрощения можно хранить данные в оперативной памяти.
 
+**Дополнительно:** кешировать результат поиска.
+
 ## en
 There is a bundle of ATMs.
 
@@ -21,6 +23,8 @@ ATMs can be added and deleted.
 You can send a request with geographic coordinates and get the 5 nearest ATMs.
 
 For simplicity, you can store data in RAM.
+
+**Extra task:** use cache for search.
 
 # How to run
 
@@ -46,8 +50,8 @@ $ ruby ./main.rb
 
 `remove <identity>` удаление из списка `<identity>` - уникальный идентификатор  
 
-
 ## en
+
 Command structure:
 
 ```

@@ -5,10 +5,12 @@ class Application
   # @param atm_repository [Infrastructure::AtmRepository] ATM's collection
   # @param atm_creator [Domain::AtmCreator] domain creation service
   # @param atm_remover [Domain::AtmRemover] domain remove service
-  def initialize(atm_repository:, atm_creator:, atm_remover:)
+  # @param cache [Infrastructure::NearestCache] cacher for searh requests
+  def initialize(atm_repository:, atm_creator:, atm_remover:, cache:)
     @atm_repository = atm_repository
     @atm_creator = atm_creator
     @atm_remover = atm_remover
+    @cache = cache
   end
 
   # Find nearest
@@ -21,7 +23,10 @@ class Application
     location = catch(:invalid_params) { Domain::Point.build(latitude: to_f(latitude), longitude: to_f(longitude)) }
     return "invalid location" if location.nil?
 
-    atm_repository.nearest(location: location, count: 5).join("\n")
+    cache.with_cache(latitude: to_f(latitude), longitude: to_f(longitude)) do
+      atm_repository.nearest(location: location, count: 5).join("\n")
+    end
+
   end
 
   # Add atm
@@ -39,7 +44,11 @@ class Application
       new_atm || "invalid parameters"
     end
 
-    new_atm || "atm with identity #{identity} already exists"
+    return "atm with identity #{identity} already exists" if new_atm.nil?
+
+    cache.clear!
+
+    new_atm
   end
 
   # Remove atm
@@ -53,12 +62,14 @@ class Application
 
     return "entity not found" unless success
 
+    cache.clear!
+
     "success"
   end
 
   private
 
-  attr_reader :atm_repository, :atm_creator, :atm_remover
+  attr_reader :atm_repository, :atm_creator, :atm_remover, :cache
 
   def parse_params(raw_arams, expected_count)
     throw(:invalid_params) unless raw_arams.is_a?(String)

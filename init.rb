@@ -32,7 +32,8 @@ def init
   app = Application.new(
     atm_repository: atm_repository,
     atm_creator: Domain::AtmCreator.new(factory: atm_factory, repository: atm_repository),
-    atm_remover: Domain::AtmRemover.new(repository: atm_repository)
+    atm_remover: Domain::AtmRemover.new(repository: atm_repository),
+    cache: Infrastructure::NearestCache.new
   )
   dispacther = Dispatcher.new
 
