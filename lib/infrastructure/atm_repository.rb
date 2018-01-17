@@ -3,20 +3,26 @@
 module Infrastructure
   # Storage for ATMs
   class AtmRepository
-
     # @param collection [Array<Domain::Atm>] pre-initialized atms
     def initialize(collection: [])
       @collection = collection
     end
 
+    # Checks if atm with given identity is exists
+    # @param identity [String] identity to find
+    # @retutn [Bool]
     def exists?(identity:)
-      collection.any?{ |atm| atm.identity == identity}
+      collection.any? { |atm| atm.identity == identity }
     end
 
+    # Deletes ATM with given identity
+    # @param identity [String] identity to find
     def delete(identity:)
       collection.delete_if { |atm| atm.identity == identity }
     end
 
+    # Add indentity to storage
+    # @param atm [Domain::Atm] new atm
     def add(atm)
       collection.push(atm)
     end

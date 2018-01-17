@@ -1,11 +1,19 @@
-class Application
+# frozen_string_literal: true
 
+# Application skeleton
+class Application
+  # @param atm_repository [Infrastructure::AtmRepository] ATM's collection
+  # @param atm_creator [Domain::AtmCreator] domain creation service
+  # @param atm_remover [Domain::AtmRemover] domain remove service
   def initialize(atm_repository:, atm_creator:, atm_remover:)
     @atm_repository = atm_repository
     @atm_creator = atm_creator
     @atm_remover = atm_remover
   end
 
+  # Find nearest
+  # @param params [String] raw params string from console
+  # @return [String]
   def nearest(params)
     latitude, longitude = catch(:invalid_params) { parse_params(params, 2) }
     return "invalid location" if longitude.nil?
@@ -16,6 +24,9 @@ class Application
     atm_repository.nearest(location: location, count: 5).join("\n")
   end
 
+  # Add atm
+  # @param params [String] raw params string from console
+  # @return [String]
   def add_atm(params)
     identity, latitude, longitude = catch(:invalid_params) { parse_params(params, 3) }
 
@@ -31,6 +42,9 @@ class Application
     new_atm || "atm with identity #{identity} already exists"
   end
 
+  # Remove atm
+  # @param params [String] raw params string from console
+  # @return [String]
   def remove_atm(params)
     identity = catch(:invalid_params) { parse_params(params, 1).first }
     return "invalid identity" if identity.nil?

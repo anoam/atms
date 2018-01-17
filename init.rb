@@ -1,23 +1,28 @@
+# frozen_string_literal: true
 
-$:.unshift(File.dirname(__FILE__))
-$:.unshift(File.join(File.dirname(__FILE__), "lib"))
+$LOAD_PATH.unshift(File.dirname(__FILE__))
+$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), "lib"))
 
 require "dispatcher"
 require "domain"
 require "infrastructure"
 require "application"
 
+# rubocop:disable Metrics/AbcSize
+# rubocop:disable Metrics/MethodLength
+# Initialize application
+# @return [Dispatcher]
 def init
   atm_factory = Domain::AtmFactory.new
 
   predefined_entities = catch(:invalid_params) do
     atm_factory.build_multiple(
-        [{ identity: "Penza", latitude: 53.19, longitude: 45.01 },
-         { identity: "London", latitude: 51.51, longitude: -0.085 },
-         { identity: "Rostov", latitude: 47.22, longitude: 39.71 },
-         { identity: "Sydney", latitude: -33.87, longitude: 151.26 },
-         { identity: "Rio de Janeiro", latitude: -22.91, longitude: -43.14 },
-         { identity: "Moscow", latitude: 55.75, longitude: 37.61 }]
+      [{ identity: "Penza", latitude: 53.19, longitude: 45.01 },
+       { identity: "London", latitude: 51.51, longitude: -0.085 },
+       { identity: "Rostov", latitude: 47.22, longitude: 39.71 },
+       { identity: "Sydney", latitude: -33.87, longitude: 151.26 },
+       { identity: "Rio de Janeiro", latitude: -22.91, longitude: -43.14 },
+       { identity: "Moscow", latitude: 55.75, longitude: 37.61 }]
     )
   end
   raise("Bad seeds") if predefined_entities.nil?
@@ -35,9 +40,8 @@ def init
   dispacther.register("remove") { |params| app.remove_atm(params) }
   dispacther.register("add") { |params| app.add_atm(params) }
 
-
   dispacther.register("help") do
-    puts <<~text
+    puts <<~TEXT
       Format:
         command [arg;]
       Commands:
@@ -53,8 +57,10 @@ def init
           returns: "success" or error description
           params: atm_identity; latitude; longitude
           examle: add Saratov; 51.53; 46.03
-    text
+    TEXT
   end
 
   dispacther
 end
+# rubocop:enable Metrics/AbcSize
+# rubocop:enable Metrics/MethodLength
