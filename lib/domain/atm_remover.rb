@@ -11,9 +11,11 @@ module Domain
     #   throw :unknown_entity if Atm not exists
     # @param identity [String] atm-to-remove's identity
     def remove(identity:)
-      throw(:unknown_atm) unless repository.exists?(identity: identity)
+      throw(:unknown_atm, false) unless repository.exists?(identity: identity)
 
       repository.delete(identity: identity)
+
+      true
     end
 
     private

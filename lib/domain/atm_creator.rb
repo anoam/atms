@@ -13,7 +13,7 @@ module Domain
 
       atm = factory.build(identity: identity, latitude: latitude, longitude: longitude)
 
-      repository.save(atm)
+      repository.add(atm)
 
       atm
     end

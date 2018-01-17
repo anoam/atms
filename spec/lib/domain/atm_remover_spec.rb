@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require "domain"
-require_relative "shared_examples"
 
 RSpec.describe Domain::AtmRemover do
   let(:atm_repository) { double(:atm_repository, exists?: true, delete: nil) }
@@ -13,11 +12,13 @@ RSpec.describe Domain::AtmRemover do
     subject.remove(identity: :atm_identity)
   end
 
+  it { is_expected.to be_truthy }
+
   context "when atm not exists" do
     before { allow(atm_repository).to receive(:exists?).with(identity: :atm_identity).and_return(false) }
 
     it "throws :unknown_atm" do
-      expect { subject.remove(identity: :atm_identity) }.to throw_symbol(:unknown_atm)
+      expect { subject.remove(identity: :atm_identity) }.to throw_symbol(:unknown_atm, false)
 
     end
   end

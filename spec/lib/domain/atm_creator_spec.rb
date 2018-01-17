@@ -9,7 +9,7 @@ RSpec.describe Domain::AtmCreator do
   # ensure interface
   it_behaves_like("atm_factory") { let(:factory) { atm_factory } }
 
-  let(:atm_repository) { double(:atm_repository, save: nil, exists?: false) }
+  let(:atm_repository) { double(:atm_repository, add: nil, exists?: false) }
 
 
   subject { Domain::AtmCreator.new(factory: atm_factory, repository: atm_repository) }
@@ -20,7 +20,7 @@ RSpec.describe Domain::AtmCreator do
   end
 
   it "saves atm to repository" do
-    expect(atm_repository).to receive(:save).with(fake_atm)
+    expect(atm_repository).to receive(:add).with(fake_atm)
     subject.create(identity: "CoolATM1", latitude: 53.19, longitude: 45.01)
   end
 

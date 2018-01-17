@@ -13,8 +13,10 @@ module Domain
     # @param longitude [Numerical] geo longitude
     # @return [Point]
     def self.build(latitude:, longitude:)
-      throw(:invalid_params) unless (0..90).include?(latitude)
-      throw(:invalid_params) unless (-180..180).include?(longitude)
+      throw(:invalid_params) unless latitude.is_a?(Numeric)
+      throw(:invalid_params) unless longitude.is_a?(Numeric)
+      throw(:invalid_params) unless latitude.between?(-90, 90)
+      throw(:invalid_params) unless longitude.between?(-180, 180)
 
       new(latitude: latitude, longitude: longitude)
     end
